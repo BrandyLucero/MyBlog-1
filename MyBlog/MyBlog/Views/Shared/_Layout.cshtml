@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header>
+        <h1>The Coolest Blog Around</h1>
+        <!-- if the user is logged in, display the Logout button -->
+        @if (Request.IsAuthenticated)
+        {
+            <div>
+                Hello, @User.Identity.Name
+                &nbsp;|&nbsp;
+                <a href="@Url.Action("Index","Post")">Your Posts</a>
+                &nbsp;|&nbsp;
+                <a href="@Url.Action("Logout", "Account")">Log Out</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <a href="@Url.Action("Login", "Account")">Login</a>
+                &nbsp;|&nbsp;
+                <a href="@Url.Action("Register", "Account")">Register</a>
+            </div>
+        }
+    </header>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

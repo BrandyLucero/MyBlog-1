@@ -1,0 +1,72 @@
+﻿@model MyBlog.Models.Registration
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Register</h2>
+
+<!-- Step 1. Add the enctype attribute to the form tag using the value "multipart/form-data" -->
+<form action="@Url.Action("Register", "Account")" method="post" enctype="multipart/form-data">
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Registration</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Username)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Username)
+            @Html.ValidationMessageFor(model => model.Username)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Password)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Password)
+            @Html.ValidationMessageFor(model => model.Password)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PasswordConfirm)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PasswordConfirm)
+            @Html.ValidationMessageFor(model => model.PasswordConfirm)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Image)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Image)
+            @Html.ValidationMessageFor(model => model.Image)
+        </div>
+        <div class="upload-image">
+        <input type="file" value="Upload Image" />    
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

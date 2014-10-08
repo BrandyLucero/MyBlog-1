@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MyBlogModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="MyBlogEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Authors" EntityType="MyBlogModel.Author" />
+    <EntitySet Name="Comments" EntityType="MyBlogModel.Comment" />
+    <EntitySet Name="Posts" EntityType="MyBlogModel.Post" />
+    <AssociationSet Name="FK_Posts_Authors" Association="MyBlogModel.FK_Posts_Authors">
+      <End Role="Authors" EntitySet="Authors" />
+      <End Role="Posts" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Comments_Posts" Association="MyBlogModel.FK_Comments_Posts">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Author">
+    <Key>
+      <PropertyRef Name="AuthorID" />
+    </Key>
+    <Property Name="AuthorID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ImageUrl" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Username" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Posts" Relationship="MyBlogModel.FK_Posts_Authors" FromRole="Authors" ToRole="Posts" />
+  </EntityType>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="CommentID" />
+    </Key>
+    <Property Name="CommentID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Body" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="3" />
+    <Property Name="PostID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Post" Relationship="MyBlogModel.FK_Comments_Posts" FromRole="Comments" ToRole="Posts" />
+  </EntityType>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="PostID" />
+    </Key>
+    <Property Name="PostID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Body" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="DateCreated" Type="DateTime" Precision="3" />
+    <Property Name="ImageUrl" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Likes" Type="Int32" />
+    <Property Name="AuthorID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Author" Relationship="MyBlogModel.FK_Posts_Authors" FromRole="Posts" ToRole="Authors" />
+    <NavigationProperty Name="Comments" Relationship="MyBlogModel.FK_Comments_Posts" FromRole="Posts" ToRole="Comments" />
+  </EntityType>
+  <Association Name="FK_Posts_Authors">
+    <End Role="Authors" Type="MyBlogModel.Author" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Posts" Type="MyBlogModel.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Authors">
+        <PropertyRef Name="AuthorID" />
+      </Principal>
+      <Dependent Role="Posts">
+        <PropertyRef Name="AuthorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Comments_Posts">
+    <End Role="Posts" Type="MyBlogModel.Post" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Comments" Type="MyBlogModel.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="PostID" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="PostID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
